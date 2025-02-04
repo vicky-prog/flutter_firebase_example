@@ -10,6 +10,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_example/presentation/blocs/auth/auth_bloc.dart';
+import 'package:flutter_firebase_example/presentation/pages/login_page.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 
@@ -128,20 +131,25 @@ Future<void> main() async {
     await setupFlutterNotifications();
   }
 
-  runApp(MessagingExampleApp());
+  runApp(MultiBlocProvider(
+    providers: [
+       BlocProvider<AuthBloc>(create: (context)=>AuthBloc())
+    ],
+    child: MyApp()));
 }
 
 /// Entry point for the example application.
-class MessagingExampleApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Messaging Example App',
       theme: ThemeData.dark(),
-      routes: {
-        '/': (context) => Application(),
-        '/message': (context) => MessageView(),
-      },
+      home: AuthScreen(),
+      // routes: {
+      //   '/': (context) => Application(),
+      //   '/message': (context) => MessageView(),
+      // },
     );
   }
 }
