@@ -8,9 +8,9 @@ part 'auth_state.dart';
 
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  AuthBloc() : super(AuthInitial()) {
+ // final FirebaseAuth _auth = FirebaseAuth.instance;
+final FirebaseAuth _auth;
+  AuthBloc(this._auth) : super(AuthInitial()) {
     on<LoginEvent>(_onLogin);
     on<SignupEvent>(_onSignup);
     on<LogoutEvent>(_onLogout);
@@ -25,7 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       emit(Authenticated(user: userCredential.user!));
     } on FirebaseAuthException catch (e) {
-      emit(AuthError(message: e.message!));
+      emit(AuthError(message: e.message ?? 'An error occurred')); // Handle null message
     }
   }
 

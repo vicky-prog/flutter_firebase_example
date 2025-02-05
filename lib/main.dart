@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -133,7 +134,7 @@ Future<void> main() async {
 
   runApp(MultiBlocProvider(
     providers: [
-       BlocProvider<AuthBloc>(create: (context)=>AuthBloc())
+       BlocProvider<AuthBloc>(create: (context)=>AuthBloc(FirebaseAuth.instance))
     ],
     child: MyApp()));
 }
