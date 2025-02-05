@@ -21,7 +21,7 @@ Place google-services.json in the android/app directory.
 Modify android/build.gradle and android/app/build.gradle according to Firebase setup instructions.
 Install Dependencies
 Clone the repository:
-git clone https://github.com/yourusername/flutter_firebase_example.git
+git clone https://github.com/vicky-prog/flutter_firebase_example.git
 cd flutter_firebase_example
 Install the required dependencies:
 flutter pub get
