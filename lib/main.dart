@@ -13,6 +13,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_example/presentation/blocs/auth/auth_bloc.dart';
+import 'package:flutter_firebase_example/presentation/pages/home_page.dart';
 import 'package:flutter_firebase_example/presentation/pages/login_page.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
@@ -145,8 +146,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Messaging Example App',
-      theme: ThemeData.dark(),
-      home: AuthScreen(),
+      //theme: ThemeData.dark(),
+      debugShowCheckedModeBanner: false,
+      home: AuthStateHandler(),
       // routes: {
       //   '/': (context) => Application(),
       //   '/message': (context) => MessageView(),
@@ -386,3 +388,26 @@ class MetaCard extends StatelessWidget {
     );
   }
 }
+
+
+
+class AuthStateHandler extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Something went wrong!'));
+        } else if (snapshot.hasData) {
+          return HomePage();
+        } else {
+          return LoginPage();
+        }
+      },
+    );
+  }
+}
+
