@@ -4,10 +4,11 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mocktail/mocktail.dart';
 
-
 // Step 1: Create Fake classes or Mocking FirebaseAuth and UserCredential
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
+
 class MockUserCredential extends Mock implements UserCredential {}
+
 class MockUser extends Mock implements User {}
 
 void main() {
@@ -44,7 +45,8 @@ void main() {
         when(() => mockUserCredential.user).thenReturn(mockUser);
         return authBloc;
       },
-      act: (bloc) => bloc.add(LoginEvent(email: 'test@example.com', password: 'password123')),
+      act: (bloc) => bloc
+          .add(LoginEvent(email: 'test@example.com', password: 'password123')),
       expect: () => [AuthLoading(), Authenticated(user: mockUser)],
       verify: (_) {
         verify(() => mockFirebaseAuth.signInWithEmailAndPassword(
@@ -55,24 +57,27 @@ void main() {
     );
 
     // Test for Login Event (failure scenario)
-   // Test for failed Login (FirebaseAuthException)
-blocTest<AuthBloc, AuthState>(
-  'emits [AuthLoading, AuthError] when login fails',
-  build: () {
-    when(() => mockFirebaseAuth.signInWithEmailAndPassword(
-          email: any(named: 'email'),
-          password: any(named: 'password'),
-        )).thenThrow(FirebaseAuthException(
-          code: 'user-not-found', 
-          message: 'user-not-found',  // Set the message explicitly
+    // Test for failed Login (FirebaseAuthException)
+    blocTest<AuthBloc, AuthState>(
+      'emits [AuthLoading, AuthError] when login fails',
+      build: () {
+        when(() => mockFirebaseAuth.signInWithEmailAndPassword(
+              email: any(named: 'email'),
+              password: any(named: 'password'),
+            )).thenThrow(FirebaseAuthException(
+          code: 'user-not-found',
+          message: 'user-not-found', // Set the message explicitly
         ));
 
-    return authBloc;
-  },
-  act: (bloc) => bloc.add(LoginEvent(email: 'wrong@example.com', password: 'wrongpassword')),
-  expect: () => [AuthLoading(), AuthError(message: 'user-not-found')], // Now match the actual message
-);
-
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+          LoginEvent(email: 'wrong@example.com', password: 'wrongpassword')),
+      expect: () => [
+        AuthLoading(),
+        AuthError(message: 'user-not-found')
+      ], // Now match the actual message
+    );
 
     // Test for Signup Event
     blocTest<AuthBloc, AuthState>(
@@ -86,7 +91,8 @@ blocTest<AuthBloc, AuthState>(
         when(() => mockUserCredential.user).thenReturn(mockUser);
         return authBloc;
       },
-      act: (bloc) => bloc.add(SignupEvent(email: 'test@example.com', password: 'password123')),
+      act: (bloc) => bloc
+          .add(SignupEvent(email: 'test@example.com', password: 'password123')),
       expect: () => [AuthLoading(), Authenticated(user: mockUser)],
     );
 
