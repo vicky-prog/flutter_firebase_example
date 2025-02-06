@@ -6,14 +6,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_firebase_example/data/services/push_notification_service.dart';
+import 'package:flutter_firebase_example/core/network/firebase_service.dart';
+import 'package:flutter_firebase_example/core/network/push_notification_service.dart';
 import 'package:flutter_firebase_example/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_firebase_example/presentation/pages/home_page.dart';
 import 'package:flutter_firebase_example/presentation/pages/login_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await FirebaseService.initialize();
   // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
