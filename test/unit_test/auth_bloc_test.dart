@@ -10,6 +10,16 @@ class MockUserCredential extends Mock implements UserCredential {}
 
 class MockUser extends Mock implements User {}
 
+class TestConstants {
+  static const validEmail = 'test@example.com';
+  static const validPassword = 'password123';
+  static const invalidEmail = 'wrong@example.com';
+  static const invalidPassword = 'wrongpassword';
+  static const userNotFoundErrorCode = 'user-not-found';
+  static const userNotFoundErrorMessage = 'user-not-found';
+}
+
+
 void main() {
   late AuthBloc authBloc;
   late MockFirebaseAuth mockFirebaseAuth;
@@ -43,12 +53,12 @@ void main() {
         when(() => mockUserCredential.user).thenReturn(mockUser);
         return authBloc;
       },
-      act: (bloc) => bloc.add(LoginEvent(email: 'test@example.com', password: 'password123')),
+      act: (bloc) => bloc.add(LoginEvent(email: TestConstants.validEmail, password: TestConstants.validPassword)),
       expect: () => [AuthLoading(false), Authenticated(false, user: mockUser)], // Pass _isNewUser to AuthLoading and Authenticated
       verify: (_) {
         verify(() => mockFirebaseAuth.signInWithEmailAndPassword(
-              email: 'test@example.com',
-              password: 'password123',
+              email: TestConstants.validEmail,
+              password: TestConstants.validPassword,
             )).called(1);
       },
     );
@@ -68,7 +78,7 @@ void main() {
         return authBloc;
       },
       act: (bloc) => bloc.add(
-          LoginEvent(email: 'wrong@example.com', password: 'wrongpassword')),
+          LoginEvent(email: TestConstants.invalidEmail, password: TestConstants.invalidPassword)),
       expect: () => [
         AuthLoading(false), // Pass _isNewUser to AuthLoading
         AuthError(false, message: 'user-not-found'),
@@ -87,7 +97,7 @@ void main() {
         when(() => mockUserCredential.user).thenReturn(mockUser);
         return authBloc;
       },
-      act: (bloc) => bloc.add(SignupEvent(email: 'test@example.com', password: 'password123')),
+      act: (bloc) => bloc.add(SignupEvent(email: TestConstants.validEmail, password: TestConstants.validPassword)),
       expect: () => [AuthLoading(false), Authenticated(false, user: mockUser)], // Pass _isNewUser to AuthLoading and Authenticated
     );
 
@@ -119,7 +129,7 @@ void main() {
         return authBloc;
       },
       act: (bloc) => bloc.add(
-          LoginEvent(email: 'wrong@example.com', password: 'wrongpassword')),
+          LoginEvent(email: TestConstants.invalidEmail, password: TestConstants.invalidPassword)),
       expect: () => [
         AuthLoading(false), // Pass _isNewUser to AuthLoading
         AuthError(false, message: 'user-not-found'),

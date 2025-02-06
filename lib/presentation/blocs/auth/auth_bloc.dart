@@ -11,7 +11,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   // Pass initial value directly to AuthInitial in the constructor
   AuthBloc(this._auth) : super(AuthInitial(false)) {
-    // Pass false or true based on initial state
     on<LoginEvent>(_onLogin);
     on<SignupEvent>(_onSignup);
     on<LogoutEvent>(_onLogout);

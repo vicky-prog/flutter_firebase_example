@@ -33,3 +33,4 @@ class ToggleAuthModeEvent extends AuthEvent {}
 
 class ResetAuthStateEvent extends AuthEvent {
 }
+
