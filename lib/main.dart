@@ -2,13 +2,18 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_example/core/network/firebase_service.dart';
 import 'package:flutter_firebase_example/core/network/push_notification_service.dart';
+import 'package:flutter_firebase_example/data/datasources/firebase_user_datasource.dart';
+import 'package:flutter_firebase_example/data/repositories/firebase_user_repository.dart';
+import 'package:flutter_firebase_example/domain/usecases/add_user_usecase.dart';
 import 'package:flutter_firebase_example/presentation/blocs/auth/auth_bloc.dart';
+import 'package:flutter_firebase_example/presentation/blocs/user/user_bloc.dart';
 import 'package:flutter_firebase_example/presentation/pages/home_page.dart';
 import 'package:flutter_firebase_example/presentation/pages/login_page.dart';
 
@@ -24,7 +29,16 @@ Future<void> main() async {
   }
 
   runApp(MultiBlocProvider(providers: [
-    BlocProvider<AuthBloc>(create: (context) => AuthBloc(FirebaseAuth.instance))
+    BlocProvider<AuthBloc>(
+        create: (context) => AuthBloc(FirebaseAuth.instance)),
+    BlocProvider<UserBloc>(
+        create: (context) => UserBloc(
+              AddUserUseCase(
+                UserRepositoryImpl(
+                  FirebaseUserDatasource(),
+                ),
+              ),
+            ))
   ], child: MyApp()));
 }
 

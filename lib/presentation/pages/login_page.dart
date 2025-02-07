@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_example/core/constants/app_colors.dart';
 import 'package:flutter_firebase_example/core/constants/app_images.dart';
 import 'package:flutter_firebase_example/core/utils/textfield_styles.dart';
+import 'package:flutter_firebase_example/domain/entities/user_entity.dart';
 import 'package:flutter_firebase_example/presentation/blocs/auth/auth_bloc.dart';
+import 'package:flutter_firebase_example/presentation/blocs/user/user_bloc.dart';
 import 'package:flutter_firebase_example/presentation/pages/home_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -18,15 +20,31 @@ class LoginPage extends StatelessWidget {
       backgroundColor: AppColors.ghostWhite,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
-          }
-          if (state is Authenticated) {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => HomePage()));
-          }
+ if (state is AuthError) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(state.message)),
+    );
+  } else if (state is Authenticated) {
+     // Check if the user is new before adding
+    if (state.isNewUser) {
+      final userEntity = UserEntity(
+        id: state.user.uid,
+        name: "John Doe",
+        age: 25,
+        address: "100 Mountain View",
+      );
+
+      context.read<UserBloc>().add(AddUserEvent(userEntity));
+    }
+
+
+    // Navigate to HomePage
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomePage()),
+    );
+  }
+
         },
         builder: (context, state) {
           return Center(
