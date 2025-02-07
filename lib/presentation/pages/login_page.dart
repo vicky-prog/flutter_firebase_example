@@ -29,7 +29,7 @@ class LoginPage extends StatelessWidget {
     if (state.isNewUser) {
       final userEntity = UserEntity(
         id: state.user.uid,
-        name: "John Doe",
+        name: "vignesh",
         age: 25,
         address: "100 Mountain View",
       );
