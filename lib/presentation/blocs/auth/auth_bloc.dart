@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_firebase_example/core/utils/validators.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -80,10 +81,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return false;
     }
 
-    // Basic email format validation
-    final emailRegex =
-        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-    if (!emailRegex.hasMatch(email)) {
+    
+    if (!validateEmail(email)) {
       emit(AuthError(_isNewUser, message: "Invalid email format"));
       // After emitting the error state, trigger the reset state
       add(ResetAuthStateEvent()); // Reset the state through an event
@@ -91,7 +90,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
 
     // Password length validation
-    if (password.length < 6) {
+    if (!validatePassword(password)) {
       emit(AuthError(_isNewUser,
           message: "Password must be at least 6 characters long"));
       // After emitting the error state, trigger the reset state
