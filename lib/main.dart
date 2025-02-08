@@ -10,7 +10,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_example/core/network/firebase_service.dart';
 import 'package:flutter_firebase_example/core/network/push_notification_service.dart';
 import 'package:flutter_firebase_example/data/datasources/firebase_user_datasource.dart';
+import 'package:flutter_firebase_example/data/repositories/firebase_auth_service.dart';
 import 'package:flutter_firebase_example/data/repositories/firebase_user_repository.dart';
+import 'package:flutter_firebase_example/domain/repositories/auth_repository.dart';
 import 'package:flutter_firebase_example/domain/usecases/add_user_usecase.dart';
 import 'package:flutter_firebase_example/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_firebase_example/presentation/blocs/user/user_bloc.dart';
@@ -23,6 +25,7 @@ Future<void> main() async {
   // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+ 
 
   if (!kIsWeb) {
     await setupFlutterNotifications();
@@ -30,7 +33,7 @@ Future<void> main() async {
 
   runApp(MultiBlocProvider(providers: [
     BlocProvider<AuthBloc>(
-        create: (context) => AuthBloc(FirebaseAuth.instance)),
+        create: (context) => AuthBloc(FirebaseAuthService())),
     BlocProvider<UserBloc>(
         create: (context) => UserBloc(
               AddUserUseCase(
