@@ -4,9 +4,11 @@ class FirebaseUserDatasource {
   final DatabaseReference _dbRef;
   FirebaseUserDatasource() : _dbRef = FirebaseDatabase.instance.ref();
 
+  String tableName = 'users';
+
   Future<void> addUserData({required String userId,required Map<String, dynamic> data}) async {
     try {
-      await _dbRef.child("users/$userId").set(data);
+      await _dbRef.child("$tableName/$userId").set(data);
     } catch (e) {
       // Handle errors here, e.g., log or rethrow custom exceptions.
       throw Exception("Failed to set user data: $e");
@@ -15,7 +17,7 @@ class FirebaseUserDatasource {
 
    Future<Map<String, dynamic>?> getUserData(String userId) async {
     try {
-      final snapshot = await _dbRef.child("users/$userId").get();
+      final snapshot = await _dbRef.child("$tableName/$userId").get();
       if (snapshot.exists) {
         return Map<String, dynamic>.from(snapshot.value as Map);
       }

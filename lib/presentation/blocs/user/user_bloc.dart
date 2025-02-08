@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_firebase_example/domain/entities/user_entity.dart';
-import 'package:flutter_firebase_example/domain/repositories/user_repository.dart';
 import 'package:flutter_firebase_example/domain/usecases/add_user_usecase.dart';
 
 part 'user_event.dart';

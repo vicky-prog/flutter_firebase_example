@@ -9,13 +9,17 @@ class UserRepositoryImpl implements UserRepository {
 
   UserRepositoryImpl(this._datasource);
 
- @override
+  @override
   Future<void> addUser(UserEntity user) async {
-    final userModel = UserModel.fromEntity(user);
-    await _datasource.addUserData(
-      userId: userModel.id,
-      data: userModel.toJson(),
-    );
+    try {
+      final userModel = UserModel.fromEntity(user);
+      await _datasource.addUserData(
+        userId: userModel.id,
+        data: userModel.toJson(),
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 }
 
