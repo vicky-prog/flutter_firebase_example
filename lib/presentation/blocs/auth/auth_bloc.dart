@@ -2,16 +2,17 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_firebase_example/core/utils/validators.dart';
+import 'package:flutter_firebase_example/domain/repositories/auth_repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final FirebaseAuth _auth;
+  final AuthRepository _authRepository; 
   bool _isNewUser = false; // Instance variable
 
   // Pass initial value directly to AuthInitial in the constructor
-  AuthBloc(this._auth) : super(AuthInitial(false)) {
+  AuthBloc(this._authRepository) : super(AuthInitial(false)) {
     on<LoginEvent>(_onLogin);
     on<SignupEvent>(_onSignup);
     on<LogoutEvent>(_onLogout);
@@ -19,41 +20,42 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ResetAuthStateEvent>(_reset);
   }
 
-  Future<void> _onLogin(LoginEvent event, Emitter<AuthState> emit) async {
-    if (!_validate(event.email, event.password, emit)) return;
-    emit(AuthLoading(_isNewUser));
-    try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: event.email,
-        password: event.password,
-      );
-      emit(Authenticated(_isNewUser, user: userCredential.user!));
-    } on FirebaseAuthException catch (e) {
-      emit(AuthError(_isNewUser, message: e.message ?? 'An error occurred'));
+ Future<void> _onLogin(LoginEvent event, Emitter<AuthState> emit) async {
+  if (!_validate(event.email, event.password, emit)) return;
+  emit(AuthLoading(_isNewUser));
+  try {
+    UserCredential userCredential = await _authRepository.login(
+      email: event.email,
+      password: event.password,
+    );
+    emit(Authenticated(_isNewUser, user: userCredential.user!));
+  } catch (e) {
+     emit(AuthError(_isNewUser, message: e.toString() ));
       // After emitting the error state, trigger the reset state
       add(ResetAuthStateEvent()); // Reset the state through an event
-    }
   }
+}
+
 
   Future<void> _onSignup(SignupEvent event, Emitter<AuthState> emit) async {
     if (!_validate(event.email, event.password, emit)) return;
     emit(AuthLoading(_isNewUser));
     try {
       UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+          await _authRepository.signup(
         email: event.email,
         password: event.password,
       );
       emit(Authenticated(_isNewUser, user: userCredential.user!));
-    } on FirebaseAuthException catch (e) {
-      emit(AuthError(_isNewUser, message: e.message!));
+    }  catch (e) {
+      emit(AuthError(_isNewUser, message: e.toString()));
       // After emitting the error state, trigger the reset state
       add(ResetAuthStateEvent()); // Reset the state through an event
     }
   }
 
   Future<void> _onLogout(LogoutEvent event, Emitter<AuthState> emit) async {
-    await _auth.signOut();
+    await _authRepository.logout();
     emit(Unauthenticated(_isNewUser)); // Pass _isNewUser here as well.
     // After emitting the error state, trigger the reset state
     add(ResetAuthStateEvent()); // Reset the state through an event
