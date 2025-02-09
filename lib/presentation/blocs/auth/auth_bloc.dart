@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_firebase_example/core/utils/validators.dart';
+import 'package:flutter_firebase_example/presentation/core/utils/validators.dart';
 import 'package:flutter_firebase_example/domain/repositories/auth_repository.dart';
 
 part 'auth_event.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_firebase_example/core/constants/app_colors.dart';
-import 'package:flutter_firebase_example/core/constants/app_images.dart';
-import 'package:flutter_firebase_example/core/utils/textfield_styles.dart';
+import 'package:flutter_firebase_example/presentation/core/themes/app_colors.dart';
+import 'package:flutter_firebase_example/presentation/core/constants/app_images.dart';
+import 'package:flutter_firebase_example/presentation/core/utils/textfield_styles.dart';
 import 'package:flutter_firebase_example/domain/entities/user_entity.dart';
 import 'package:flutter_firebase_example/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_firebase_example/presentation/blocs/user/user_bloc.dart';

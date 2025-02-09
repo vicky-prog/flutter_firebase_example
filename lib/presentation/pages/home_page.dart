@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_example/presentation/blocs/auth/auth_bloc.dart';
 import 'package:flutter_firebase_example/presentation/pages/login_page.dart';
 
+
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
