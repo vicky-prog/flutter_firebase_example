@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 
-class AppColors {
+abstract class AppColors {
   // Define colors as constants
   static const Color black = Color(0xFF000000);
   static const Color nearBlack = Color(0xFF000001);
