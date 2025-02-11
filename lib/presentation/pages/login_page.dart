@@ -20,31 +20,29 @@ class LoginPage extends StatelessWidget {
       backgroundColor: AppColors.ghostWhite,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
- if (state is AuthError) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(state.message)),
-    );
-  } else if (state is Authenticated) {
-     // Check if the user is new before adding
-    if (state.isNewUser) {
-      final userEntity = UserEntity(
-        id: state.user.uid,
-        name: "vignesh",
-        age: 25,
-        address: "100 Mountain View",
-      );
+          if (state is AuthError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          } else if (state is Authenticated) {
+            // Check if the user is new before adding
+            if (state.isNewUser) {
+              final userEntity = UserEntity(
+                id: state.user.uid,
+                name: state.user.displayName ?? "",
+                age: 0,
+                address: "100 Mountain View",
+              );
 
-      context.read<UserBloc>().add(AddUserEvent(userEntity));
-    }
+              context.read<UserBloc>().add(AddUserEvent(userEntity));
+            }
 
-
-    // Navigate to HomePage
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomePage()),
-    );
-  }
-
+            // Navigate to HomePage
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          }
         },
         builder: (context, state) {
           return Center(
@@ -164,8 +162,4 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
-
-  
 }
-
-
