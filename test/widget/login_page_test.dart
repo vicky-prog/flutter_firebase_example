@@ -63,5 +63,80 @@ void main() {
       expect(find.text('Password'), findsOneWidget);
       expect(find.byType(ElevatedButton), findsOneWidget);
     });
+
+
+   testWidgets("triggers LoginEvent when SignIn button is pressed", (WidgetTester tester)async{
+     await tester.pumpWidget(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider<AuthBloc>.value(value: mockAuthBloc),
+            BlocProvider<UserBloc>.value(value: mockUserBloc),
+          ],
+          child: MaterialApp(
+            home: LoginPage(),
+          ),
+        ),
+      );
+
+         // Simulate user input
+      await tester.enterText(
+          find.widgetWithText(TextField, 'Enter email'), 'test@example.com');
+      await tester.enterText(
+          find.widgetWithText(TextField, 'Password'), 'password123');
+
+      // Tap the SignIn button
+      await tester.tap(find.byType(ElevatedButton));
+      await tester.pump();
+
+      // Verify LoginEvent is added to AuthBloc
+      verify(() => mockAuthBloc.add(LoginEvent(
+            email: 'test@example.com',
+            password: 'password123',
+          ))).called(1);
+   });
+
+     testWidgets('shows CircularProgressIndicator when loading',
+        (WidgetTester tester) async {
+      // Mock loading state
+      when(() => mockAuthBloc.state).thenReturn(AuthLoading(true));
+     
+
+      await tester.pumpWidget(
+        BlocProvider<AuthBloc>.value(
+          value: mockAuthBloc,
+          child: MaterialApp(home: LoginPage()),
+        ),
+      );
+
+      // Verify CircularProgressIndicator is shown
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+
+      testWidgets('shows SnackBar when AuthError state occurs',
+        (WidgetTester tester) async {
+      // Mock error state
+      const errorMessage = 'Authentication failed';
+      whenListen(
+        mockAuthBloc,
+        Stream<AuthState>.fromIterable([AuthError(false,message:errorMessage)]),
+        initialState: AuthInitial(false),
+      );
+
+      await tester.pumpWidget(
+        BlocProvider<AuthBloc>.value(
+          value: mockAuthBloc,
+          child: MaterialApp(home: LoginPage()),
+        ),
+      );
+
+      // Wait for the SnackBar to appear
+      await tester.pump();
+
+      // Verify the SnackBar shows the error message
+      expect(find.text(errorMessage), findsOneWidget);
+    });
   });
+    
 }
+
+
