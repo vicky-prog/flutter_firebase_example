@@ -24,6 +24,11 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8
     }
 
+    testOptions {
+    execution "ANDROIDX_TEST_ORCHESTRATOR"
+    }
+
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.flutter_firebase_example"
@@ -33,6 +38,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: "true"
+
     }
 
     buildTypes {
@@ -40,6 +49,11 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
+        }
+
+        debug {
+        minifyEnabled false
+        shrinkResources false
         }
     }
 }
@@ -51,6 +65,8 @@ dependencies {
   // TODO: Add the dependencies for Firebase products you want to use
   // When using the BoM, don't specify versions in Firebase dependencies
   implementation 'com.google.firebase:firebase-analytics'
+  androidTestUtil "androidx.test:orchestrator:1.5.1"
+
 
   // Add the dependencies for any other desired Firebase products
   // https://firebase.google.com/docs/android/setup#available-libraries
