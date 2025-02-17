@@ -55,7 +55,7 @@ class LoginPage extends StatelessWidget {
                     Row(
                       children: [
                         Image.asset(
-                          AppImages.logo,
+                          ImagePaths.logo,
                           height: 150,
                         ),
                         Flexible(
