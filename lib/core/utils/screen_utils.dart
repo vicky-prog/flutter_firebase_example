@@ -28,4 +28,24 @@ class ScreenUtils {
 
   // Returns the screen height
   static double get screenHeight => _screenHeight!;
+
+  // Returns the device type (mobile, tablet, or web)
+  static String get deviceType {
+    if (_screenWidth! < 600) {
+      return 'Mobile';
+    } else if (_screenWidth! >= 600 && _screenWidth! < 1200) {
+      return 'Tablet';
+    } else {
+      return 'Web';
+    }
+  }
+
+  // Check if the device is mobile
+  static bool get isMobile => _screenWidth! < 600;
+
+  // Check if the device is tablet
+  static bool get isTablet => _screenWidth! >= 600 && _screenWidth! < 1200;
+
+  // Check if the device is web
+  static bool get isWeb => _screenWidth! >= 1200;
 }

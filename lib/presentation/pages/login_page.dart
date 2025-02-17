@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_example/core/utils/screen_utils.dart';
 import 'package:flutter_firebase_example/presentation/core/themes/app_colors.dart';
 import 'package:flutter_firebase_example/presentation/core/constants/app_images.dart';
 import 'package:flutter_firebase_example/presentation/core/utils/textfield_styles.dart';
@@ -56,7 +57,7 @@ class LoginPage extends StatelessWidget {
                       children: [
                         Image.asset(
                           ImagePaths.logo,
-                          height: 150,
+                          height: ScreenUtils.height(20),
                         ),
                         Flexible(
                           child: Text(
@@ -136,7 +137,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.width * 0.10,
+                      height:ScreenUtils.height(10),
                     ),
                     TextButton(
                       onPressed: () {
