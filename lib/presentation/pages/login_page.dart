@@ -17,6 +17,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     return Scaffold(
       backgroundColor: AppColors.ghostWhite,
       body: BlocConsumer<AuthBloc, AuthState>(
@@ -57,7 +58,7 @@ class LoginPage extends StatelessWidget {
                       children: [
                         Image.asset(
                           ImagePaths.logo,
-                          height: ScreenUtils.height(20),
+                          height: ScreenUtils.height(percentage: 20, context:context),
                         ),
                         Flexible(
                           child: Text(
@@ -137,7 +138,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height:ScreenUtils.height(10),
+                      height:ScreenUtils.height(percentage: 10, context: context),
                     ),
                     TextButton(
                       onPressed: () {

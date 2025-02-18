@@ -26,18 +26,15 @@ Future<void> main() async {
   runApp(MultiBlocProvider(providers: getBlocProviders(), child: MyApp()));
 }
 
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-     // Initialize screen utilities (only needs to be done once)
-    ScreenUtils.init(context);
+    
+     
     return MaterialApp(
-     // showPerformanceOverlay: true,
+     
       title: 'Skill Mentor',
-      //theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
       home: AuthStateHandler(),
     );
