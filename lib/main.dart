@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_example/config/dependencies.dart';
+import 'package:flutter_firebase_example/core/utils/screen_utils.dart';
 import 'package:flutter_firebase_example/data/services/firebase_service.dart';
 import 'package:flutter_firebase_example/data/services/push_notification_service.dart';
 import 'package:flutter_firebase_example/presentation/pages/home_page.dart';
@@ -25,15 +26,15 @@ Future<void> main() async {
   runApp(MultiBlocProvider(providers: getBlocProviders(), child: MyApp()));
 }
 
-/// Entry point for the example application.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
+    
+     
     return MaterialApp(
-      title: 'Messaging Example App',
-      //theme: ThemeData.dark(),
+     
+      title: 'Skill Mentor',
       debugShowCheckedModeBanner: false,
       home: AuthStateHandler(),
     );
